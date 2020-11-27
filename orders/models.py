@@ -1,9 +1,6 @@
 from django.db import models
 from datetime import datetime
 from django.conf import settings
-
-class Payments(models.Model):
-    title = models.CharField(blank=True, max_length=150)
 # Create your models here.
 
 class OrderManager(models.Manager):
@@ -15,7 +12,6 @@ class Order(models.Model):
     created_on = models.DateField(default=datetime.now())
     title = models.CharField(blank=True, max_length=150)
     updated_on = models.DateField(auto_now_add=True)
-    payment_id = models.ForeignKey(Payments, on_delete=models.CASCADE)
     value = models.DecimalField(default=0.00, decimal_places=2, max_digits=20)
     discount = models.DecimalField(default=0.00, decimal_places=2, max_digits=20)
     final_value = models.DecimalField(default=0.00, decimal_places=2, max_digits=20)
@@ -23,7 +19,7 @@ class Order(models.Model):
     objects = models.Manager()
     browser = OrderManager()
 
-class Products(models.Model):
+class Product(models.Model):
     created_on = models.DateField(default=datetime.now())
     name = models.CharField(blank=True, max_length=255)
     updated_on = models.DateField(auto_now_add=True)
@@ -31,3 +27,6 @@ class Products(models.Model):
     discount = models.DecimalField(default=0.00, decimal_places=2, max_digits=20)
     quantity = models.IntegerField(default=0)
 
+class Payment(models.Model):
+    title = models.CharField(blank=True, max_length=150)
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
